@@ -1,0 +1,13 @@
+Package: ForestIV
+Title: ForestIV
+Version: 0.0.0.9000
+Authors@R: 
+    person(given = "Mochen",
+           family = "Yang",
+           role = c("aut", "cre"),
+           email = "yang3653@umn.edu")
+Description: Implement ForestIV Approach to Correct Estimation Bias with Data-Mined Variable.
+License: GPL (>= 2)
+Encoding: UTF-8
+Imports: AER, hdm
+RoxygenNote: 7.1.0

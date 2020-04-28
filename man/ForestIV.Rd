@@ -8,6 +8,7 @@ ForestIV(
   data_test,
   data_unlabel,
   control,
+  method,
   iterative = TRUE,
   ntree,
   model_unbias,
@@ -19,9 +20,11 @@ ForestIV(
 
 \item{data_unlabel}{Unlabel dataframe for random forest, must have all trees' predictions.}
 
-\item{control}{A character vector of control variable names.}
+\item{control}{A character vector of control variable names. Pass an empty vector if there are no control variables}
 
-\item{iterative}{Whether to perform iterative IV selection or not, default to TRUE.}
+\item{method}{The method for IV selection. Supported values are "Lasso" (lasso-based selection) and "IIV" (imperfect IV method)}
+
+\item{iterative}{Whether to perform iterative IV selection or not, default to TRUE. Only relevant when method = "Lasso"}
 
 \item{ntree}{Number of trees in the random forest.}
 

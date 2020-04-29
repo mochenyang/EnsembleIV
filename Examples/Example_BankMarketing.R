@@ -59,7 +59,8 @@ model_unbias = lm(Y~actual+control1+control2, data = data_label)
 summary(model_unbias)
 
 # ForestIV estimation
-result = ForestIV(data_test, data_unlabel, control, iterative = TRUE, ntree, model_unbias, diagnostic = FALSE)
+result = ForestIV(data_test, data_unlabel, control, method = "Lasso", iterative = TRUE, ntree, model_unbias, diagnostic = FALSE)
+#result = ForestIV(data_test, data_unlabel, control, method = "IIV", ntree = ntree, model_unbias = model_unbias, diagnostic = FALSE)
 
 H_critical = qchisq(0.95, df = length(control)+2)
 coef_unbiased = coef(model_unbias)

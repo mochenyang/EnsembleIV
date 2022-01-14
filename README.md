@@ -6,4 +6,4 @@ To install, run
 devtools::install_github("mochenyang/ForestIV")
 ```
 
-Here is a [replicable demonstration]() of how to use this package.
+Here is a [replicable demonstration](https://mochenyang.github.io/mochenyangblog/research/2022/01/10/ForestIV.html) of how to use this package.

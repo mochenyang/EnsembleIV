@@ -1,4 +1,4 @@
-# Simulation Example with Bike Sharing Dataset (one iteration)
+# Replicable Simulation Example with Bike Sharing Dataset
 library(ForestIV)
 library(dplyr)
 library(randomForest)
@@ -14,12 +14,10 @@ N = nrow(Bike)
 N_train = 1000
 N_test = 200
 N_unlabel = N - N_train - N_test
-# parameters for econometric model and simulation
-sigma = 2
 
 
 set.seed(123456)
-# make random forest
+# train random forest
 train = sample(1:nrow(Bike), N_train)
 test = sample((1:nrow(Bike))[-train], N_test)
 unlabel = sample((1:nrow(Bike))[-c(train, test)], N_unlabel)
@@ -38,7 +36,7 @@ aggr_pred_test = pred_test$aggregate
 # simulate data for econometric model
 control1 = runif(N, min = -10, max = 10)
 control2 = rnorm(N, sd = 10)
-epsilon = rnorm(N, sd = sigma)
+epsilon = rnorm(N, sd = 2)
 control = c("control1", "control2")
 Y = 1.0 + 0.5*actual + 2.0*control1 + control2 + epsilon
 
@@ -57,14 +55,15 @@ model_unbias = lm(Y~actual+control1+control2, data = data_label)
 summary(model_unbias)
 
 # ForestIV estimation
-result = ForestIV(data_test, data_unlabel, control, method = "Lasso", iterative = TRUE, ntree, model_unbias, diagnostic = FALSE)
-#result = ForestIV(data_test, data_unlabel, control, method = "IIV", ntree = ntree, model_unbias = model_unbias, diagnostic = FALSE)
+result = ForestIV(data_test = data_test, data_unlabel = data_unlabel, control = control,
+                  method = "Lasso", iterative = TRUE, ntree = ntree, model_unbias = model_unbias,
+                  family = gaussian(link = "identity"), diagnostic = TRUE)
 
-H_critical = qchisq(0.95, df = length(control)+2)
+H_critical = qchisq(0.95, df = 4)
 coef_unbiased = coef(model_unbias)
-result %>% rowwise() %>%
+result %>%
   mutate(bias2 = sum((c(beta_1, beta_2, beta_3, beta_4) - coef_unbiased)^2),
          variance = se_1^2 + se_2^2 + se_3^2 + se_4^2,
-         mse = bias2+variance) %>% ungroup() %>%
+         mse = bias2+variance) %>%
   arrange(mse) %>%
   filter(row_number() == 1 & Hotelling < H_critical)

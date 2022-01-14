@@ -9,5 +9,5 @@ Authors@R:
 Description: Implement ForestIV Approach to Correct Estimation Bias with Data-Mined Variable.
 License: GPL (>= 2)
 Encoding: UTF-8
-Imports: AER, hdm
-RoxygenNote: 7.1.0
+Imports: AER, hdm, ivtools
+RoxygenNote: 7.1.2

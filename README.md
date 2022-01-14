@@ -5,3 +5,5 @@ To install, run
 ```r
 devtools::install_github("mochenyang/ForestIV")
 ```
+
+Here is a [replicable demonstration]() of how to use this package.

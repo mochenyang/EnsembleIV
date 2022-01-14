@@ -12,6 +12,7 @@ ForestIV(
   iterative = TRUE,
   ntree,
   model_unbias,
+  family,
   diagnostic
 )
 }
@@ -28,7 +29,9 @@ ForestIV(
 
 \item{ntree}{Number of trees in the random forest.}
 
-\item{model_unbias}{A lm object of unbiased estimation.}
+\item{model_unbias}{Unbiased estimation.}
+
+\item{family}{Model specification, same as in the family parameter in glm.}
 
 \item{diagnostic}{Whether to output diagnostic correlations for instrument validity and strength, default to TRUE.}
 }

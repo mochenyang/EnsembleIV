@@ -1,9 +1,7 @@
-# ForestIV
-An R package that implements [ForestIV](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=3339983), under active development.
+# EnsembleIV and ForestIV
+An R package that implements [EnsembleIV](https://arxiv.org/abs/2303.02820) and [ForestIV](https://pubsonline.informs.org/doi/abs/10.1287/ijds.2022.0019).
 
 To install, run 
 ```r
-devtools::install_github("mochenyang/ForestIV")
+devtools::install_github("mochenyang/EnsembleIV")
 ```
-
-Here is a [replicable demonstration](https://mochenyang.github.io/mochenyangblog/research/2022/01/10/ForestIV.html) of how to use this package.

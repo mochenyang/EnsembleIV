@@ -13,7 +13,8 @@ ForestIV(
   ntree,
   model_unbias,
   family,
-  diagnostic
+  diagnostic,
+  select_method
 )
 }
 \arguments{
@@ -23,7 +24,7 @@ ForestIV(
 
 \item{control}{A character vector of control variable names. Pass an empty vector if there are no control variables}
 
-\item{method}{The method for IV selection. Supported values are "Lasso" (lasso-based selection) and "IIV" (imperfect IV method)}
+\item{method}{"Lasso" for ForestIV method and "IIV" for EnsembleIV method.}
 
 \item{iterative}{Whether to perform iterative IV selection or not, default to TRUE. Only relevant when method = "Lasso"}
 
@@ -34,6 +35,8 @@ ForestIV(
 \item{family}{Model specification, same as in the family parameter in glm.}
 
 \item{diagnostic}{Whether to output diagnostic correlations for instrument validity and strength, default to TRUE.}
+
+\item{select_method}{method of IV selection. One of "optimal" (LASSO based), "top3", and "PCA".}
 }
 \value{
 ForestIV estimation results

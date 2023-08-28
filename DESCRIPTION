@@ -1,13 +1,13 @@
-Package: ForestIV
-Title: ForestIV
+Package: EnsembleIV
+Title: EnsembleIV
 Version: 0.0.0.9000
 Authors@R: 
     person(given = "Mochen",
            family = "Yang",
            role = c("aut", "cre"),
            email = "yang3653@umn.edu")
-Description: Implement ForestIV Approach to Correct Estimation Bias with Data-Mined Variable.
+Description: Implement ForestIV and EnsembleIV Approaches to Correct Estimation Bias with Data-Mined Variable.
 License: GPL (>= 2)
 Encoding: UTF-8
-Imports: AER, hdm, ivtools
-RoxygenNote: 7.1.2
+Imports: AER, hdm, ivtools, OneSampleMR
+RoxygenNote: 7.2.3

@@ -55,9 +55,14 @@ model_unbias = lm(Y~actual+control1+control2, data = data_label)
 summary(model_unbias)
 
 # ForestIV estimation
+#result = ForestIV(data_test = data_test, data_unlabel = data_unlabel, control = control,
+#                  method = "Lasso", iterative = TRUE, ntree = ntree, model_unbias = model_unbias,
+#                  family = gaussian(link = "identity"), diagnostic = TRUE)
+
+# EnsembleIV estimation
 result = ForestIV(data_test = data_test, data_unlabel = data_unlabel, control = control,
-                  method = "Lasso", iterative = TRUE, ntree = ntree, model_unbias = model_unbias,
-                  family = gaussian(link = "identity"), diagnostic = TRUE)
+                  method = "IIV", iterative = TRUE, ntree = ntree, model_unbias = model_unbias,
+                  family = gaussian(link = "identity"), diagnostic = TRUE, select_method = "PCA")
 
 H_critical = qchisq(0.95, df = 4)
 coef_unbiased = coef(model_unbias)

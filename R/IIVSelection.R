@@ -1,4 +1,4 @@
-#### Functions to create valid IVs from imperfect IVs for EnsembleIV approach ####
+#### Functions to create valid IVs from imperfect IVs ####
 # Based on imperfect IV work: Nevo and Rosen (2012); Clarke and Matt (2017)
 
 
@@ -53,7 +53,7 @@ IIVSelect_Strong = function(data_unlabel_new, regressor, candidates) {
 # data_unlabel: unlabeled dataset
 # ntree: number of trees in random forest
 # regressor: name of the endogenous tree
-# select_method: method of IV selection. Only for research purpose, will remove in production version
+# select_method: method of IV selection. See manuscript for details.
 # TODO: allow different names for trees
 IIVSelect = function(data_test, data_unlabel, ntree, regressor, select_method){
   candidates = setdiff(paste0("X", 1:ntree), regressor)
@@ -66,6 +66,25 @@ IIVSelect = function(data_test, data_unlabel, ntree, regressor, select_method){
   if (select_method == "optimal") {
     IVs = IIVSelect_Strong(data_unlabel_new, regressor, candidates)
   }
+  if (select_method == "strongest one") {
+    corrs = stats::cor(data_unlabel_new[,regressor], data_unlabel_new[,candidates])
+    IVs = colnames(corrs)[which.max(abs(corrs))]
+  }
+  if (select_method == "random one") {
+    IVs = sample(candidates, size = 1)
+  }
+  if (select_method == "random 25%") {
+    IVs = sample(candidates, size = 0.25*length(candidates))
+  }
+  if (select_method == "random 50%") {
+    IVs = sample(candidates, size = 0.5*length(candidates))
+  }
+  if (select_method == "random 75%") {
+    IVs = sample(candidates, size = 0.75*length(candidates))
+  }
+  if (select_method == "all other") {
+    IVs = candidates
+  }
   if (select_method == "top3") {
     corrs = stats::cor(data_unlabel_new[,regressor], data_unlabel_new[,candidates])
     IVs = colnames(corrs)[order(abs(corrs), decreasing = TRUE)[1:3]]
@@ -74,9 +93,17 @@ IIVSelect = function(data_test, data_unlabel, ntree, regressor, select_method){
     # how many components to take?
     ncomp = 3
     IVs = paste0("PCA_IV", 1:ncomp)
-    pca = stats::prcomp(data_unlabel_new[,candidates])$rotation
+    pca = prcomp(data_unlabel_new[,candidates])$rotation
     data_unlabel_new[IVs] = as.matrix(data_unlabel_new[,candidates]) %*% pca[,1:ncomp]
     data_test_new[IVs] = as.matrix(data_test_new[,candidates]) %*% pca[,1:ncomp]
+  }
+  if (select_method == "PCA-Lasso") {
+    # apply lasso on top of PCA transformed IVs
+    pca = prcomp(data_unlabel_new[,candidates])$rotation
+    IVs = paste0("PCA_IV", 1:length(candidates))
+    data_unlabel_new[IVs] = as.matrix(data_unlabel_new[,candidates]) %*% pca
+    data_test_new[IVs] = as.matrix(data_test_new[,candidates]) %*% pca
+    IVs = IIVSelect_Strong(data_unlabel_new, regressor, IVs)
   }
 
   # some post-processing
@@ -84,8 +111,9 @@ IIVSelect = function(data_test, data_unlabel, ntree, regressor, select_method){
     pp_abs_after = get_corrs(lhs = data_unlabel_new[,regressor], rhs = data_unlabel_new[,IVs])
     # because ground truth is only observed on data_test, pe_abs_after can only be computed using data_test_new
     # by definition, pe_abs_after will be very close to 0
-    # in the paper, with synthetic data, pe_abs_after can be  computed using data_unlabel_new
     pe_abs_after = get_corrs(lhs = data_test_new[,regressor]-data_test_new$actual, rhs = data_test_new[,IVs])
+    # in the paper, with synthetic data, pe_abs_after is computed using data_unlabel_new
+    # Caution: the following line only make sense in a synthetic context, when "actual" is observed on unlabel data
     #pe_abs_after = get_corrs(lhs = data_unlabel_new[,regressor]-data_unlabel_new$actual, rhs = data_unlabel_new[,IVs])
   }
   else {

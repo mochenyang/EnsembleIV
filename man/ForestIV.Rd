@@ -24,22 +24,22 @@ ForestIV(
 
 \item{control}{A character vector of control variable names. Pass an empty vector if there are no control variables}
 
-\item{method}{"Lasso" for ForestIV method and "IIV" for EnsembleIV method.}
+\item{method}{The method for IV selection. Supported values are "Lasso" (ForestIV method) and "IIV" (EnsembleIV method)}
 
 \item{iterative}{Whether to perform iterative IV selection or not, default to TRUE. Only relevant when method = "Lasso"}
 
-\item{ntree}{Number of trees in the random forest.}
+\item{ntree}{Number of trees in the random forest (or number of individual learners in general).}
 
-\item{model_unbias}{Unbiased estimation.}
+\item{model_unbias}{Unbiased estimation model object.}
 
 \item{family}{Model specification, same as in the family parameter in glm.}
 
 \item{diagnostic}{Whether to output diagnostic correlations for instrument validity and strength, default to TRUE.}
 
-\item{select_method}{method of IV selection. One of "optimal" (LASSO based), "top3", and "PCA".}
+\item{select_method}{method of IV selection. Supported values are "optimal", "top3", and "PCA" (see manuscript for details)}
 }
 \value{
-ForestIV estimation results
+Estimation results
 }
 \description{
 This function implements the main ForestIV approach.

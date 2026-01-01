@@ -1,5 +1,5 @@
-Package: EnsembleIV
-Title: EnsembleIV
+Package: ForestIV
+Title: ForestIV
 Version: 0.0.0.9000
 Authors@R: 
     person(given = "Mochen",
@@ -10,4 +10,4 @@ Description: Implement ForestIV and EnsembleIV Approaches to Correct Estimation 
 License: GPL (>= 2)
 Encoding: UTF-8
 Imports: AER, hdm, ivtools, OneSampleMR
-RoxygenNote: 7.2.3
+RoxygenNote: 7.3.3

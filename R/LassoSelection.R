@@ -1,4 +1,5 @@
-#### Functions to select strong and valid IVs based on Lasso regression for ForestIV approach ####
+#### Functions to select strong and valid IVs based on Lasso regression ####
+
 
 # Use Lasso method to select strong IVs
 # data_unlabel: unlabeled dataset
